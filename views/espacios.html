@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstacionAPP - Gestionar Espacios</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .offcanvas-collapse {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            width: 300px;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            overflow-y: auto;
+            visibility: hidden;
+            background-color: #343a40;
+            transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .offcanvas-collapse.open {
+            visibility: visible;
+            transform: translateX(-100%);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation" id="navbarSideCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">EstacionAPP</a>
+    </nav>
+    <div class="offcanvas-collapse" id="offcanvasNavbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/spaces">Gestionar parqueadero</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/logout">Cerrar sesión</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container mt-5">
+      <div class="card">
+        <div class="card-body">
+          <h1>Gestionar Espacios</h1>
+          <section class="my-5">
+              <h2>Espacios de Estacionamiento</h2>
+              <div id="statusList"></div>            
+          </section>
+        </div>
+      </div>   
+      
+      <script>
+        fetch('/spaces/parkingstatus')
+          .then(response => response.json())
+          .then(data => {
+            const statusList = document.getElementById('statusList');
+            statusList.innerHTML = `
+              <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Totales</th>
+                        <th>Disponibles</th>
+                        <th>En Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vehiculos</td>
+                        <td>${data.car.limit}</td>
+                        <td>${data.car.available}</td>
+                        <td>${data.car.occupied}</td>
+                    </tr>
+                    <tr>
+                        <td>Motos</td>
+                        <td>${data.motorcycle.limit}</td>
+                        <td>${data.motorcycle.available}</td>
+                        <td>${data.motorcycle.occupied}</td>
+                    </tr>
+                </tbody>
+              </table>                
+            `;
+          });
+      </script>
+
+      <div class="card">
+        <div class="card-body">
+          <section class="my-5">
+            <h2>Registro de Espacios</h2>
+            <form action="/spaces/add" method="POST">
+              <div class="form-group">
+                <label for="vehicle_type">Tipo de Vehículo</label>
+                <select class="form-control"  name="vehicle_type" id="vehicle_type" required>
+                  <option value="car">Carro</option>
+                  <option value="motorcycle">Moto</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="location">Ubicación</label>
+                <input type="text" class="form-control" name="location" id="location" placeholder="Ubicación" required>
+              </div>
+              <div class="form-group">
+                <label for="license_plate">Placa</label>
+                <input type="text" class="form-control" name="license_plate" id="license_plate" placeholder="Placa" required>
+              </div>              
+              <button type="submit"  class="btn btn-primary">Agregar Espacio</button>
+            </form>
+          </section>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <section class="my-5">
+            <h2>Listado de Espacios</h2>
+            <table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>Tipo</th>
+                      <th>Ubicación</th>
+                      <th>Placa</th>
+                      <th>Estado</th>
+                      <th>Entrada</th>
+                      <th>Salida</th>
+                  </tr>
+              </thead>
+              <tbody  id="spacesList">                  
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+      
+      <script>
+        fetch('/spaces')
+          .then(response => response.json())
+          .then(data => {
+            const spacesList = document.getElementById('spacesList');
+            spacesList.innerHTML = data.map(space => `
+              <tr>
+                <td>${space.vehicle_type}</td>
+                <td>${space.location}</td>                      
+                <td>${space.license_plate || 'N/A'}</td>
+                <td>${space.status}</td>
+                <td>${space.entry_time || 'N/A'}</td>
+                <td>${space.exit_time || 'N/A'}</td>
+              </tr>
+            `).join('');
+          });
+      </script> 
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function () {
+            'use strict'
+
+            document.getElementById('navbarSideCollapse').addEventListener('click', function () {
+                document.getElementById('offcanvasNavbar').classList.toggle('open');
+            })
+        })()
+    </script>
+</body>
+</html>

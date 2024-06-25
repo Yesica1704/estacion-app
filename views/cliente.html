@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstacionAPP - Gestionar Espacios</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .offcanvas-collapse {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            width: 300px;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            overflow-y: auto;
+            visibility: hidden;
+            background-color: #343a40;
+            transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .offcanvas-collapse.open {
+            visibility: visible;
+            transform: translateX(-100%);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation" id="navbarSideCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">EstacionAPP</a>
+    </nav>
+    <div class="offcanvas-collapse" id="offcanvasNavbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#">Reservar</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container mt-5">
+        <h1>Reservar Espacio</h1>
+        <section class="my-5">
+            <h2>Espacios de Estacionamiento para Vehículos</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Totales</th>
+                        <th>Disponibles</th>
+                        <th>En Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>100</td>
+                        <td>60</td>
+                        <td>40</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-primary btn-block mb-3">Reservar Espacio para Carro</button>
+        </section>
+
+        <section class="my-5">
+            <h2>Espacios de Estacionamiento para Motos</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Totales</th>
+                        <th>Disponibles</th>
+                        <th>En Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50</td>
+                        <td>30</td>
+                        <td>20</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-primary btn-block mb-3">Reservar Espacio para Moto</button>
+        </section>
+
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function () {
+            'use strict'
+
+            document.getElementById('navbarSideCollapse').addEventListener('click', function () {
+                document.getElementById('offcanvasNavbar').classList.toggle('open');
+            })
+        })()
+    </script>
+</body>
+</html>
